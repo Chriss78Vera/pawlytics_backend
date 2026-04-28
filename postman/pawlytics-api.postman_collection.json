@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "Pawlytics API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    },
+    {
+      "key": "roleId",
+      "value": "1"
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    },
+    {
+      "key": "clinicalHistoryId",
+      "value": "65f1a1b2c3d4e5f678901234"
+    },
+    {
+      "key": "petId",
+      "value": "65f1a1b2c3d4e5f678901111"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "Create Role",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Administrador\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles"]
+            }
+          }
+        },
+        {
+          "name": "Get Roles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles"]
+            }
+          }
+        },
+        {
+          "name": "Get Role By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{roleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles", "{{roleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Role",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Veterinario\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{roleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles", "{{roleId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Role",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{roleId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["roles", "{{roleId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@pawlytics.com\",\n  \"password\": \"secret123\",\n  \"roleId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"veterinario@pawlytics.com\",\n  \"password\": \"secret456\",\n  \"roleId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clinical History",
+      "item": [
+        {
+          "name": "Create Clinical History",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id_mascota\": \"65f1a1b2c3d4e5f678901111\",\n  \"fecha_registro\": \"2026-04-27T20:00:00.000Z\",\n  \"tipo_registro\": \"consulta\",\n  \"sintomas\": [\n    {\n      \"nombre\": \"tos\",\n      \"intensidad\": \"media\",\n      \"duracion\": \"2 dias\",\n      \"frecuencia\": \"intermitente\"\n    }\n  ],\n  \"datos_salud\": {\n    \"peso\": 12.5,\n    \"temperatura\": 38.2,\n    \"frecuencia_cardiaca\": 90,\n    \"frecuencia_respiratoria\": 24\n  },\n  \"alimentacion\": {\n    \"come_normal\": true,\n    \"descripcion\": \"Apetito normal\"\n  },\n  \"comportamiento\": {\n    \"estado_animo\": \"tranquilo\",\n    \"nivel_actividad\": \"medio\"\n  },\n  \"observaciones\": \"Paciente estable\",\n  \"estado\": \"registrado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clinical-history",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical-history"]
+            }
+          }
+        },
+        {
+          "name": "Get Clinical Histories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clinical-history",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical-history"]
+            }
+          }
+        },
+        {
+          "name": "Get Clinical History By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clinical-history/{{clinicalHistoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical-history", "{{clinicalHistoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Clinical History By Pet",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clinical-history/pet/{{petId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical-history", "pet", "{{petId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Clinical History",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tipo_registro\": \"control\",\n  \"datos_salud\": {\n    \"peso\": 12.8,\n    \"temperatura\": 38.1\n  },\n  \"observaciones\": \"Paciente estable con leve mejora\",\n  \"estado\": \"revisado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clinical-history/{{clinicalHistoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical-history", "{{clinicalHistoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Clinical History",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clinical-history/{{clinicalHistoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clinical-history", "{{clinicalHistoryId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
