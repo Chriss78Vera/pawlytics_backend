@@ -23,6 +23,14 @@
     {
       "key": "petId",
       "value": "65f1a1b2c3d4e5f678901111"
+    },
+    {
+      "key": "typeId",
+      "value": "DOG001"
+    },
+    {
+      "key": "breedId",
+      "value": "DOGMEZ001"
     }
   ],
   "item": [
@@ -269,6 +277,88 @@
               "raw": "{{baseUrl}}/clinical-history/{{clinicalHistoryId}}",
               "host": ["{{baseUrl}}"],
               "path": ["clinical-history", "{{clinicalHistoryId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Types",
+      "item": [
+        {
+          "name": "Get Types",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tipos",
+              "host": ["{{baseUrl}}"],
+              "path": ["tipos"]
+            }
+          }
+        },
+        {
+          "name": "Get Type By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tipos/{{typeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["tipos", "{{typeId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Breeds By Type",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/tipos/{{typeId}}/razas",
+              "host": ["{{baseUrl}}"],
+              "path": ["tipos", "{{typeId}}", "razas"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Breeds",
+      "item": [
+        {
+          "name": "Get Breeds",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/razas",
+              "host": ["{{baseUrl}}"],
+              "path": ["razas"]
+            }
+          }
+        },
+        {
+          "name": "Get Breed By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/razas/{{breedId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["razas", "{{breedId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Breeds By Type Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/razas/tipo/{{typeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["razas", "tipo", "{{typeId}}"]
             }
           }
         }

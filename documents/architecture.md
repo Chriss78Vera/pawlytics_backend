@@ -1,6 +1,8 @@
 # Arquitectura de Pawlytics Backend
 
-El proyecto sigue la misma idea de arquitectura hexagonal usada en `HX-ODM-JS`: el nucleo de cada modulo vive en `Dominio`, los casos de uso en `Aplicacion` y los detalles externos en `Infraestructura`. La aplicacion tiene dos motores de persistencia: PostgreSQL con Sequelize para datos relacionales y MongoDB con Mongoose para informacion documental.
+El proyecto sigue una organizacion inspirada en arquitectura hexagonal. Cada modulo separa el nucleo del negocio, los casos de uso y los detalles externos de infraestructura. La aplicacion usa PostgreSQL con Sequelize para datos relacionales y MongoDB con Mongoose para informacion documental.
+
+Aunque la documentacion esta en espanol, los nombres tecnicos de carpetas y capas se mantienen en ingles para evitar mezcla de idiomas dentro del codigo.
 
 ## Estructura general
 
@@ -10,7 +12,7 @@ pawlytics_backend/
   src/
     app.js
     server.js
-    Infraestructura/
+    infrastructure/
       database/
         mongo/
         postgres/
@@ -18,6 +20,7 @@ pawlytics_backend/
       users/
       roles/
       clinical-history/
+      catalogs/
   documents/
   postman/
 ```
@@ -26,7 +29,7 @@ pawlytics_backend/
 
 ### `index.js`
 
-Es el punto de entrada raiz del proyecto. Su unica responsabilidad es cargar `src/server.js`, igual que en `HX-ODM-JS`.
+Es el punto de entrada raiz del proyecto. Su unica responsabilidad es cargar `src/server.js`.
 
 ### `src/app.js`
 
@@ -40,25 +43,25 @@ Arranca el proceso HTTP. Aqui se cargan variables de entorno, se abre la conexio
 
 Si en el futuro se agregan mas recursos externos, como colas o almacenamiento de archivos, su inicializacion debe coordinarse desde este archivo o desde servicios invocados por este archivo.
 
-### `src/Infraestructura/database/mongo`
+### `src/infrastructure/database/mongo`
 
-Contiene la configuracion de conexion a MongoDB.
+Contiene la configuracion global de conexion a MongoDB.
 
 Actualmente:
 - `connection.js`: abre la conexion con Mongoose usando `MONGO_URI`.
 
 Aqui deben ir solo archivos compartidos de infraestructura Mongo, por ejemplo configuracion de conexion, cierre controlado de la conexion o utilidades tecnicas globales. Los modelos Mongoose de cada modulo deben quedarse dentro de su propio modulo.
 
-### `src/Infraestructura/database/postgres`
+### `src/infrastructure/database/postgres`
 
 Contiene la configuracion global de PostgreSQL con Sequelize.
 
 Actualmente:
-- `sequelize.js`: crea la instancia Sequelize, autentica la conexion y sincroniza tablas.
+- `sequelize.js`: crea la instancia Sequelize, autentica la conexion, sincroniza tablas y ejecuta semillas necesarias.
 - `models.js`: registra modelos Sequelize compartidos.
 - `associations.js`: define relaciones entre modelos relacionales.
 
-Aqui deben ir solo elementos globales de PostgreSQL. Los modelos concretos pertenecientes a un modulo deben vivir dentro de `src/lib/<modulo>/Infraestructura/persistence/postgres`.
+Aqui deben ir solo elementos globales de PostgreSQL. Los modelos concretos pertenecientes a un modulo deben vivir dentro de `src/lib/<module>/infrastructure/persistence/postgres`.
 
 ### `src/lib`
 
@@ -68,20 +71,21 @@ Modulos actuales:
 - `users`: gestion de usuarios. Usa PostgreSQL.
 - `roles`: gestion de roles. Usa PostgreSQL.
 - `clinical-history`: gestion de historias clinicas. Usa MongoDB.
+- `catalogs`: consulta de tipos de mascota y razas. Usa PostgreSQL.
 
 ## Estructura de cada modulo
 
 Cada modulo sigue este formato:
 
 ```text
-src/lib/<modulo>/
-  Dominio/
-    Entidades/
-    Ports/
-  Aplicacion/
+src/lib/<module>/
+  domain/
+    entities/
+    ports/
+  application/
     dto/
     use-cases/
-  Infraestructura/
+  infrastructure/
     http/
       controllers/
       routes/
@@ -91,7 +95,7 @@ src/lib/<modulo>/
       postgres/ o mongoose/
 ```
 
-### `Dominio/Entidades`
+### `domain/entities`
 
 Aqui van las entidades del negocio. Representan los conceptos principales del modulo sin depender de Express, Sequelize, Mongoose ni de otra tecnologia externa.
 
@@ -100,16 +104,19 @@ Ejemplos:
 - `Role.js`
 - `ClinicalHistory.js`
 
-### `Dominio/Ports`
+El modulo `catalogs` no tiene una entidad `Catalog` porque por ahora solo agrupa consultas de datos maestros. Si en el futuro tipos y razas tienen reglas propias, se pueden agregar entidades especificas como `Type` y `Breed`.
 
-Aqui van las interfaces o contratos que necesita el dominio/aplicacion para persistir o consultar datos. En arquitectura hexagonal funcionan como puertos: describen que operaciones necesita el caso de uso, sin decidir si se ejecutan con SQL, Mongo u otra tecnologia.
+### `domain/ports`
+
+Aqui van las interfaces o contratos que necesita la capa de aplicacion para persistir o consultar datos. En arquitectura hexagonal funcionan como puertos: describen que operaciones necesita el caso de uso, sin decidir si se ejecutan con SQL, Mongo u otra tecnologia.
 
 Ejemplos:
 - `UserRepository.js`
 - `RoleRepository.js`
 - `ClinicalHistoryRepository.js`
+- `CatalogRepository.js`
 
-### `Aplicacion/use-cases`
+### `application/use-cases`
 
 Aqui van los casos de uso. Cada archivo representa una accion del sistema: crear, listar, consultar, actualizar o eliminar. Los casos de uso coordinan entidades y repositorios, pero no deben conocer detalles HTTP ni detalles concretos de base de datos.
 
@@ -117,12 +124,16 @@ Ejemplos:
 - `CreateUserUseCase.js`
 - `GetRolesUseCase.js`
 - `CreateClinicalHistoryUseCase.js`
+- `GetTypesUseCase.js`
+- `GetBreedsByTypeUseCase.js`
 
-### `Aplicacion/dto`
+### `application/dto`
 
 Aqui van los objetos de transferencia de datos usados por los casos de uso. Sirven para normalizar la entrada que llega desde HTTP antes de enviarla a la logica de aplicacion.
 
-### `Infraestructura/http`
+Los modulos de solo lectura, como `catalogs`, no necesitan DTOs si no reciben datos para crear o actualizar.
+
+### `infrastructure/http`
 
 Contiene la adaptacion HTTP del modulo.
 
@@ -134,7 +145,7 @@ Responsabilidades:
 
 Aqui si puede existir dependencia de Express, porque esta capa es un adaptador externo.
 
-### `Infraestructura/persistence/postgres`
+### `infrastructure/persistence/postgres`
 
 Contiene adaptadores concretos para PostgreSQL mediante Sequelize.
 
@@ -143,9 +154,9 @@ Aqui van:
 - Repositorios que implementan los puertos del dominio usando tablas relacionales.
 - Mapeos entre columnas de base de datos y objetos de dominio/respuesta.
 
-Actualmente lo usan `users` y `roles`.
+Actualmente lo usan `users`, `roles` y `catalogs`.
 
-### `Infraestructura/persistence/mongoose`
+### `infrastructure/persistence/mongoose`
 
 Contiene adaptadores concretos para MongoDB mediante Mongoose.
 
@@ -156,9 +167,33 @@ Aqui van:
 
 Actualmente lo usa `clinical-history`, porque la historia clinica tiene datos flexibles y documentales.
 
+## Modulo `catalogs`
+
+El modulo `catalogs` expone datos maestros de tipos de mascota y razas. No tiene operaciones de escritura por API; sus datos se cargan desde codigo al iniciar la sincronizacion de PostgreSQL.
+
+Tablas:
+- `TB_TIPO`: tipos de mascota, por ejemplo `Perro`, `Gato`, `Conejo`.
+- `TB_RAZA`: razas asociadas a un tipo.
+
+Relacion:
+- Un tipo puede tener muchas razas.
+- Una raza pertenece a un tipo.
+
+Modelos:
+- `TypePostgresModel.js`: mapea `TB_TIPO`.
+- `BreedPostgresModel.js`: mapea `TB_RAZA`.
+
+Seed:
+- `src/lib/catalogs/infrastructure/database/catalogData.js`: contiene los datos base.
+- `src/lib/catalogs/infrastructure/database/seedCatalogs.js`: inserta o actualiza los catalogos de forma idempotente.
+
+Ids:
+- Los tipos usan prefijos como `DOG001`, `CAT001`, `RAB001`.
+- Las razas combinan el prefijo del tipo, tres letras del nombre y un consecutivo por tipo. Ejemplo: `DOGMEZ001`.
+
 ## Regla para SQL y Mongo
 
-PostgreSQL se usa para datos relacionales, estructurados y con relaciones claras, como usuarios y roles.
+PostgreSQL se usa para datos relacionales, estructurados y con relaciones claras, como usuarios, roles, tipos y razas.
 
 MongoDB se usa para documentos flexibles, como historias clinicas, observaciones, sintomas, alimentacion, comportamiento y otros datos que pueden variar entre mascotas.
 

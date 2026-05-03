@@ -1,11 +1,11 @@
 require("dotenv").config();
 
 const buildApp = require("./app");
-const { connectMongo } = require("./Infraestructura/database/mongo/connection");
+const { connectMongo } = require("./infrastructure/database/mongo/connection");
 const {
   connectPostgres,
   syncPostgres
-} = require("./Infraestructura/database/postgres/sequelize");
+} = require("./infrastructure/database/postgres/sequelize");
 
 const PORT = process.env.PORT || 3000;
 
