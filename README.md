@@ -100,6 +100,22 @@ PUT    /api/clinical-history/:id
 DELETE /api/clinical-history/:id
 ```
 
+### Tipos de mascota
+
+```http
+GET /api/tipos
+GET /api/tipos/:id
+GET /api/tipos/:tipoId/razas
+```
+
+### Razas
+
+```http
+GET /api/razas
+GET /api/razas/:id
+GET /api/razas/tipo/:tipoId
+```
+
 ## Estructura del proyecto
 
 ```text
@@ -109,7 +125,7 @@ pawlytics_backend/
   src/
     app.js
     server.js
-    Infraestructura/
+    infrastructure/
       database/
         mongo/
         postgres/
@@ -125,15 +141,18 @@ pawlytics_backend/
 
 Cada modulo funcional se encuentra en `src/lib` y mantiene sus propias capas:
 
-- `Dominio`: entidades y puertos del negocio.
-- `Aplicacion`: casos de uso y DTOs.
-- `Infraestructura`: rutas HTTP, controladores, validadores y persistencia.
+- `domain`: entidades y puertos del negocio.
+- `application`: casos de uso y DTOs.
+- `infrastructure`: rutas HTTP, controladores, validadores y persistencia.
 
 Los modulos actuales son:
 
 - `users`: gestion de usuarios con PostgreSQL.
 - `roles`: gestion de roles con PostgreSQL.
 - `clinical-history`: gestion de historias clinicas con MongoDB.
+- `catalogs`: consulta de tipos de mascota y razas con PostgreSQL.
+
+Los catalogos de `TB_TIPO` y `TB_RAZA` se cargan desde el codigo al iniciar el servidor. Los ids de tipo usan prefijos como `DOG001`; los ids de raza combinan el prefijo del tipo, una abreviatura del nombre y el consecutivo, por ejemplo `DOGMEZ001`.
 
 La explicacion detallada de la arquitectura esta en `documents/architecture.md`.
 

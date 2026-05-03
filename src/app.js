@@ -4,9 +4,10 @@ const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
 
-const registerUsersModule = require("./lib/users/Infraestructura/http");
-const registerRolesModule = require("./lib/roles/Infraestructura/http");
-const registerClinicalHistoryModule = require("./lib/clinical-history/Infraestructura/http");
+const registerUsersModule = require("./lib/users/infrastructure/http");
+const registerRolesModule = require("./lib/roles/infrastructure/http");
+const registerClinicalHistoryModule = require("./lib/clinical-history/infrastructure/http");
+const registerCatalogsModule = require("./lib/catalogs/infrastructure/http");
 
 function buildApp() {
   const app = express();
@@ -26,6 +27,7 @@ function buildApp() {
   registerUsersModule(app);
   registerRolesModule(app);
   registerClinicalHistoryModule(app);
+  registerCatalogsModule(app);
 
   app.use((req, res) => {
     res.status(404).json({ message: "Ruta no encontrada" });
