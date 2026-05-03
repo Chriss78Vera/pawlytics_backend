@@ -166,7 +166,7 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"veterinario@pawlytics.com\",\n  \"password\": \"secret456\",\n  \"roleId\": 1\n}"
+              "raw": "{\n  \"roleId\": 1\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/users/{{userId}}",
