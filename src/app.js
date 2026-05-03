@@ -5,6 +5,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 
 const registerUsersModule = require("./lib/users/infrastructure/http");
+const registerUserDataModule = require("./lib/user-data/infrastructure/http");
 const registerRolesModule = require("./lib/roles/infrastructure/http");
 const registerClinicalHistoryModule = require("./lib/clinical-history/infrastructure/http");
 const registerCatalogsModule = require("./lib/catalogs/infrastructure/http");
@@ -25,6 +26,7 @@ function buildApp() {
   });
 
   registerUsersModule(app);
+  registerUserDataModule(app);
   registerRolesModule(app);
   registerClinicalHistoryModule(app);
   registerCatalogsModule(app);

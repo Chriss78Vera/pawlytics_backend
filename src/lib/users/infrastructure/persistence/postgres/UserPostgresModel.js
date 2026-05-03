@@ -33,6 +33,16 @@ const UserPostgresModel = sequelize.define(
         model: "TB_ROL",
         key: "ROL_ID"
       }
+    },
+
+    ID_DATOS: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      unique: true,
+      references: {
+        model: "TB_DATOS_USUARIO",
+        key: "ID_DATOS"
+      }
     }
   },
   {

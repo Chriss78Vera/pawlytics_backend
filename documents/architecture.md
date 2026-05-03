@@ -18,6 +18,7 @@ pawlytics_backend/
         postgres/
     lib/
       users/
+      user-data/
       roles/
       clinical-history/
       catalogs/
@@ -69,6 +70,7 @@ Contiene los modulos funcionales del sistema. Cada carpeta representa una capaci
 
 Modulos actuales:
 - `users`: gestion de usuarios. Usa PostgreSQL.
+- `user-data`: gestion de datos personales asociados a usuarios. Usa PostgreSQL.
 - `roles`: gestion de roles. Usa PostgreSQL.
 - `clinical-history`: gestion de historias clinicas. Usa MongoDB.
 - `catalogs`: consulta de tipos de mascota y razas. Usa PostgreSQL.
@@ -101,6 +103,7 @@ Aqui van las entidades del negocio. Representan los conceptos principales del mo
 
 Ejemplos:
 - `User.js`
+- `UserData.js`
 - `Role.js`
 - `ClinicalHistory.js`
 
@@ -112,6 +115,7 @@ Aqui van las interfaces o contratos que necesita la capa de aplicacion para pers
 
 Ejemplos:
 - `UserRepository.js`
+- `UserDataRepository.js`
 - `RoleRepository.js`
 - `ClinicalHistoryRepository.js`
 - `CatalogRepository.js`
@@ -156,6 +160,40 @@ Aqui van:
 
 Actualmente lo usan `users`, `roles` y `catalogs`.
 
+## Modulo `user-data`
+
+El modulo `user-data` administra la tabla `TB_DATOS_USUARIO`, que contiene datos personales del usuario.
+
+Campos principales:
+- `ID_DATOS`: identificador principal.
+- `DUS_NOMBRE`: nombres.
+- `DUS_APELLIDO`: apellidos.
+- `DUS_DIRECCION`: direccion.
+- `DUS_TELEFONO`: telefono.
+- `DUS_CEDULA`: cedula o identificacion.
+- `DUS_F_NACIMIENTO`: fecha de nacimiento.
+
+Relacion con usuarios:
+- `TB_USUARIO` tiene la columna `ID_DATOS`.
+- `TB_USUARIO.ID_DATOS` referencia `TB_DATOS_USUARIO.ID_DATOS`.
+- La relacion es 1 a 1: un usuario tiene un registro de datos de usuario y un registro de datos de usuario pertenece a un solo usuario.
+
+En Sequelize:
+- `UserDataPostgresModel.hasOne(UserPostgresModel, { foreignKey: "ID_DATOS", as: "user" })`
+- `UserPostgresModel.belongsTo(UserDataPostgresModel, { foreignKey: "ID_DATOS", as: "userData" })`
+
+Endpoints:
+
+```http
+POST   /api/user-data
+GET    /api/user-data
+GET    /api/user-data/:id
+PUT    /api/user-data/:id
+DELETE /api/user-data/:id
+```
+
+El CRUD de usuarios ahora espera `userDataId` al crear un usuario. La columna `ID_DATOS` se mantiene nullable en base de datos para no romper registros antiguos, pero la API valida que se envie en creacion.
+
 ### `infrastructure/persistence/mongoose`
 
 Contiene adaptadores concretos para MongoDB mediante Mongoose.
@@ -193,7 +231,7 @@ Ids:
 
 ## Regla para SQL y Mongo
 
-PostgreSQL se usa para datos relacionales, estructurados y con relaciones claras, como usuarios, roles, tipos y razas.
+PostgreSQL se usa para datos relacionales, estructurados y con relaciones claras, como usuarios, datos de usuario, roles, tipos y razas.
 
 MongoDB se usa para documentos flexibles, como historias clinicas, observaciones, sintomas, alimentacion, comportamiento y otros datos que pueden variar entre mascotas.
 
