@@ -16,7 +16,11 @@ class UserController {
       return res.status(201).json(user);
     } catch (error) {
       if (error.name === "SequelizeUniqueConstraintError") {
-        return res.status(409).json({ message: "El email ya esta registrado" });
+        return res.status(409).json({ message: "El email o los datos de usuario ya estan registrados" });
+      }
+
+      if (error.name === "SequelizeForeignKeyConstraintError") {
+        return res.status(400).json({ message: "roleId o userDataId no existe" });
       }
 
       return res.status(500).json({ message: error.message });
@@ -46,6 +50,14 @@ class UserController {
 
       return res.json(user);
     } catch (error) {
+      if (error.name === "SequelizeUniqueConstraintError") {
+        return res.status(409).json({ message: "Los datos de usuario ya estan asociados a otro usuario" });
+      }
+
+      if (error.name === "SequelizeForeignKeyConstraintError") {
+        return res.status(400).json({ message: "roleId o userDataId no existe" });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }

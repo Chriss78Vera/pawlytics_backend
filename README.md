@@ -79,6 +79,18 @@ PUT    /api/users/:id
 DELETE /api/users/:id
 ```
 
+Al crear un usuario se debe enviar `userDataId`, porque `TB_USUARIO` mantiene una relacion 1 a 1 con `TB_DATOS_USUARIO`.
+
+### Datos de usuario
+
+```http
+POST   /api/user-data
+GET    /api/user-data
+GET    /api/user-data/:id
+PUT    /api/user-data/:id
+DELETE /api/user-data/:id
+```
+
 ### Roles
 
 ```http
@@ -131,6 +143,7 @@ pawlytics_backend/
         postgres/
     lib/
       users/
+      user-data/
       roles/
       clinical-history/
   documents/
@@ -148,6 +161,7 @@ Cada modulo funcional se encuentra en `src/lib` y mantiene sus propias capas:
 Los modulos actuales son:
 
 - `users`: gestion de usuarios con PostgreSQL.
+- `user-data`: gestion de datos personales de usuario con PostgreSQL.
 - `roles`: gestion de roles con PostgreSQL.
 - `clinical-history`: gestion de historias clinicas con MongoDB.
 - `catalogs`: consulta de tipos de mascota y razas con PostgreSQL.
