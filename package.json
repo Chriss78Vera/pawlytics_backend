@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "Christopher Vera and Jordan Paillacho",
   "type": "commonjs",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/main.js",
-    "start": "node src/main.js"
+    "dev": "nodemon index.js",
+    "start": "node index.js"
   },
   "dependencies": {
     "cors": "^2.8.6",
