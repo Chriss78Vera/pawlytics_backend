@@ -1,12 +1,12 @@
 const express = require("express");
 
-function buildSimpleClinicalRoutes(controller, validator) {
+function buildSimpleClinicalRoutes(controller) {
   const router = express.Router();
 
-  router.post("/", validator, controller.create);
+  router.post("/", controller.create);
   router.get("/", controller.findAll);
   router.get("/:id", controller.findById);
-  router.put("/:id", validator, controller.update);
+  router.put("/:id", controller.update);
   router.delete("/:id", controller.delete);
 
   return router;

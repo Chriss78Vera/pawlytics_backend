@@ -16,6 +16,10 @@ class ClinicalHistoryController {
       const clinicalHistory = await new CreateClinicalHistoryUseCase(clinicalHistoryRepository).execute(dto);
       return res.status(201).json(clinicalHistory);
     } catch (error) {
+      if (error.name === "DomainValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }
@@ -62,6 +66,10 @@ class ClinicalHistoryController {
 
       return res.json(clinicalHistory);
     } catch (error) {
+      if (error.name === "DomainValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }

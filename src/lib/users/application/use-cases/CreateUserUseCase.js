@@ -1,10 +1,13 @@
+const User = require("../../domain/entities/User");
+
 class CreateUserUseCase {
   constructor(userRepository) {
     this.userRepository = userRepository;
   }
 
   execute(data) {
-    return this.userRepository.create(data);
+    const user = new User(data);
+    return this.userRepository.create(user.toJSON());
   }
 }
 

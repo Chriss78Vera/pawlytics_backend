@@ -1,4 +1,5 @@
 const CreateUserDTO = require("../../../application/dto/CreateUserDTO");
+const LoginUserDTO = require("../../../application/dto/LoginUserDTO");
 const CreateUserUseCase = require("../../../application/use-cases/CreateUserUseCase");
 const GetUsersUseCase = require("../../../application/use-cases/GetUsersUseCase");
 const GetUserByIdUseCase = require("../../../application/use-cases/GetUserByIdUseCase");
@@ -12,7 +13,8 @@ const userRepository = new UserPostgresRepository();
 class UserController {
   static async login(req, res) {
     try {
-      const session = await new LoginUserUseCase(userRepository).execute(req.body);
+      const dto = new LoginUserDTO(req.body);
+      const session = await new LoginUserUseCase(userRepository).execute(dto);
 
       if (!session) {
         return res.status(401).json({ message: "Credenciales invalidas" });
@@ -20,6 +22,10 @@ class UserController {
 
       return res.status(200).json(session);
     } catch (error) {
+      if (error.name === "ApplicationValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }
@@ -30,6 +36,10 @@ class UserController {
       const user = await new CreateUserUseCase(userRepository).execute(dto);
       return res.status(201).json(user);
     } catch (error) {
+      if (error.name === "DomainValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       if (error.name === "SequelizeUniqueConstraintError") {
         return res.status(409).json({ message: "El email o los datos de usuario ya estan registrados" });
       }
@@ -87,6 +97,10 @@ class UserController {
 
       return res.json(user);
     } catch (error) {
+      if (error.name === "DomainValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }

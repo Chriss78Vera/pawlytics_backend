@@ -1,4 +1,6 @@
 const CatalogRepository = require("../../../domain/ports/CatalogRepository");
+const Type = require("../../../domain/entities/Type");
+const Breed = require("../../../domain/entities/Breed");
 const TypePostgresModel = require("./TypePostgresModel");
 const BreedPostgresModel = require("./BreedPostgresModel");
 
@@ -81,13 +83,13 @@ class CatalogPostgresRepository extends CatalogRepository {
       }));
     }
 
-    return response;
+    return new Type(response).toJSON();
   }
 
   toBreedResponse(breed) {
     const rawBreed = breed.toJSON();
 
-    return {
+    return new Breed({
       id: rawBreed.RAZ_ID,
       nombre: rawBreed.RAZ_NOMBRE,
       tipo: rawBreed.tipo
@@ -96,7 +98,7 @@ class CatalogPostgresRepository extends CatalogRepository {
             nombre: rawBreed.tipo.TIP_NOMBRE
           }
         : rawBreed.TIP_ID
-    };
+    }).toJSON();
   }
 }
 

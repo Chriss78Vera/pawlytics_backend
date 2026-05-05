@@ -1,5 +1,8 @@
-class SimpleClinicalRepository {
+const SimpleClinicalRepositoryPort = require("../../../domain/ports/SimpleClinicalRepositoryPort");
+
+class SimpleClinicalRepository extends SimpleClinicalRepositoryPort {
   constructor(model, idField, mapping) {
+    super();
     this.model = model;
     this.idField = idField;
     this.mapping = mapping;

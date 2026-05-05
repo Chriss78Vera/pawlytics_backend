@@ -6,12 +6,6 @@ const DiseasePostgresModel = require("../persistence/postgres/DiseasePostgresMod
 const SimpleClinicalController = require("./controllers/SimpleClinicalController");
 const buildSimpleClinicalRoutes = require("./routes/simpleClinical.routes");
 const clinicalDetailRoutes = require("./routes/clinicalDetail.routes");
-const {
-  validateVaccine,
-  validateDeworming,
-  validateSurgery,
-  validateDisease
-} = require("./validators/clinicalRecord.validator");
 
 module.exports = function registerClinicalRecordsModule(app) {
   const vaccineController = new SimpleClinicalController(
@@ -19,7 +13,8 @@ module.exports = function registerClinicalRecordsModule(app) {
       type: "VA_TIPO",
       date: "VA_FECHA"
     }),
-    "Vacuna no encontrada"
+    "Vacuna no encontrada",
+    "vaccine"
   );
 
   const dewormingController = new SimpleClinicalController(
@@ -27,7 +22,8 @@ module.exports = function registerClinicalRecordsModule(app) {
       type: "DE_TIPO",
       date: "DE_FECHA"
     }),
-    "Desparasitacion no encontrada"
+    "Desparasitacion no encontrada",
+    "deworming"
   );
 
   const surgeryController = new SimpleClinicalController(
@@ -36,7 +32,8 @@ module.exports = function registerClinicalRecordsModule(app) {
       description: "CI_DESCRIPCION",
       date: "CI_FECHA"
     }),
-    "Cirugia no encontrada"
+    "Cirugia no encontrada",
+    "surgery"
   );
 
   const diseaseController = new SimpleClinicalController(
@@ -44,12 +41,13 @@ module.exports = function registerClinicalRecordsModule(app) {
       treatment: "EN_TRATAMIENTO",
       name: "EN_NOMBRE"
     }),
-    "Enfermedad no encontrada"
+    "Enfermedad no encontrada",
+    "disease"
   );
 
-  app.use("/api/vacunas", buildSimpleClinicalRoutes(vaccineController, validateVaccine));
-  app.use("/api/desparasitaciones", buildSimpleClinicalRoutes(dewormingController, validateDeworming));
-  app.use("/api/cirugias", buildSimpleClinicalRoutes(surgeryController, validateSurgery));
-  app.use("/api/enfermedades", buildSimpleClinicalRoutes(diseaseController, validateDisease));
+  app.use("/api/vacunas", buildSimpleClinicalRoutes(vaccineController));
+  app.use("/api/desparasitaciones", buildSimpleClinicalRoutes(dewormingController));
+  app.use("/api/cirugias", buildSimpleClinicalRoutes(surgeryController));
+  app.use("/api/enfermedades", buildSimpleClinicalRoutes(diseaseController));
   app.use("/api/detalle-clinico", clinicalDetailRoutes);
 };

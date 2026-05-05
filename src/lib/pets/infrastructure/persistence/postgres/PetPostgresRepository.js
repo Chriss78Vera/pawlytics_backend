@@ -1,9 +1,10 @@
 const PetPostgresModel = require("./PetPostgresModel");
+const PetRepository = require("../../../domain/ports/PetRepository");
 const TypePostgresModel = require("../../../../catalogs/infrastructure/persistence/postgres/TypePostgresModel");
 const BreedPostgresModel = require("../../../../catalogs/infrastructure/persistence/postgres/BreedPostgresModel");
 const UserDataPostgresModel = require("../../../../user-data/infrastructure/persistence/postgres/UserDataPostgresModel");
 
-class PetPostgresRepository {
+class PetPostgresRepository extends PetRepository {
   async create(data) {
     const pet = await PetPostgresModel.create(this.toPersistence(data));
     return this.findById(pet.ID_MASCOTA);

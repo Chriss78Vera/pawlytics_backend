@@ -1,8 +1,8 @@
-const GetTypesUseCase = require("../../../application/use-cases/GetTypesUseCase");
-const GetTypeByIdUseCase = require("../../../application/use-cases/GetTypeByIdUseCase");
-const GetBreedsUseCase = require("../../../application/use-cases/GetBreedsUseCase");
-const GetBreedByIdUseCase = require("../../../application/use-cases/GetBreedByIdUseCase");
-const GetBreedsByTypeUseCase = require("../../../application/use-cases/GetBreedsByTypeUseCase");
+const GetTypesUseCase = require("../../../application/use-cases/types/GetTypesUseCase");
+const GetTypeByIdUseCase = require("../../../application/use-cases/types/GetTypeByIdUseCase");
+const GetBreedsUseCase = require("../../../application/use-cases/breeds/GetBreedsUseCase");
+const GetBreedByIdUseCase = require("../../../application/use-cases/breeds/GetBreedByIdUseCase");
+const GetBreedsByTypeUseCase = require("../../../application/use-cases/breeds/GetBreedsByTypeUseCase");
 const CatalogPostgresRepository = require("../../persistence/postgres/CatalogPostgresRepository");
 
 const catalogRepository = new CatalogPostgresRepository();

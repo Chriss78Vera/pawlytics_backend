@@ -1,11 +1,12 @@
 const ClinicalDetailPostgresModel = require("./ClinicalDetailPostgresModel");
+const ClinicalDetailRepository = require("../../../domain/ports/ClinicalDetailRepository");
 const VaccinePostgresModel = require("./VaccinePostgresModel");
 const DewormingPostgresModel = require("./DewormingPostgresModel");
 const SurgeryPostgresModel = require("./SurgeryPostgresModel");
 const DiseasePostgresModel = require("./DiseasePostgresModel");
 const PetPostgresModel = require("../../../../pets/infrastructure/persistence/postgres/PetPostgresModel");
 
-class ClinicalDetailPostgresRepository {
+class ClinicalDetailPostgresRepository extends ClinicalDetailRepository {
   async create(data) {
     const detail = await ClinicalDetailPostgresModel.create(this.toPersistence(data));
     await this.setVaccines(detail, data.vaccineIds);

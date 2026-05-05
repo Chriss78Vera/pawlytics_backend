@@ -15,6 +15,10 @@ class RoleController {
       const role = await new CreateRoleUseCase(roleRepository).execute(dto);
       return res.status(201).json(role);
     } catch (error) {
+      if (error.name === "DomainValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }
@@ -24,6 +28,10 @@ class RoleController {
       const roles = await new GetRolesUseCase(roleRepository).execute();
       return res.json(roles);
     } catch (error) {
+      if (error.name === "DomainValidationError") {
+        return res.status(400).json({ message: error.message });
+      }
+
       return res.status(500).json({ message: error.message });
     }
   }
