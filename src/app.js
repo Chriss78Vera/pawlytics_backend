@@ -9,6 +9,8 @@ const registerUserDataModule = require("./lib/user-data/infrastructure/http");
 const registerRolesModule = require("./lib/roles/infrastructure/http");
 const registerClinicalHistoryModule = require("./lib/clinical-history/infrastructure/http");
 const registerCatalogsModule = require("./lib/catalogs/infrastructure/http");
+const registerPetsModule = require("./lib/pets/infrastructure/http");
+const registerClinicalRecordsModule = require("./lib/clinical-records/infrastructure/http");
 
 function buildApp() {
   const app = express();
@@ -28,7 +30,9 @@ function buildApp() {
   registerUsersModule(app);
   registerUserDataModule(app);
   registerRolesModule(app);
+  registerPetsModule(app);
   registerClinicalHistoryModule(app);
+  registerClinicalRecordsModule(app);
   registerCatalogsModule(app);
 
   app.use((req, res) => {

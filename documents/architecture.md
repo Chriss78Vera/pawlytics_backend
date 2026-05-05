@@ -22,6 +22,8 @@ pawlytics_backend/
       roles/
       clinical-history/
       catalogs/
+      pets/
+      clinical-records/
   documents/
   postman/
 ```
@@ -74,6 +76,8 @@ Modulos actuales:
 - `roles`: gestion de roles. Usa PostgreSQL.
 - `clinical-history`: gestion de historias clinicas. Usa MongoDB.
 - `catalogs`: consulta de tipos de mascota y razas. Usa PostgreSQL.
+- `pets`: gestion de mascotas. Usa PostgreSQL.
+- `clinical-records`: detalle clinico relacional, vacunas, desparasitaciones, cirugias y enfermedades. Usa PostgreSQL.
 
 ## Estructura de cada modulo
 
@@ -193,6 +197,100 @@ DELETE /api/user-data/:id
 ```
 
 El CRUD de usuarios ahora espera `userDataId` al crear un usuario. La columna `ID_DATOS` se mantiene nullable en base de datos para no romper registros antiguos, pero la API valida que se envie en creacion.
+
+## Modulo `pets`
+
+El modulo `pets` administra la tabla `TB_MASCOTAS`.
+
+Campos principales:
+- `ID_MASCOTA`: identificador principal.
+- `TIP_ID`: tipo de mascota. Referencia el catalogo existente `TB_TIPO`.
+- `RAZ_ID`: raza de mascota. Referencia el catalogo existente `TB_RAZA`.
+- `MA_NOMBRE`: nombre de la mascota.
+- `MA_F_NACIMIENTO`: fecha de nacimiento.
+- `MA_COLOR`: color.
+- `MA_SEXO`: sexo.
+- `MA_PESO`: peso.
+- `MA_S_PARTICULARES`: senales particulares.
+- `ID_DATOS`: datos del usuario responsable.
+
+Relaciones:
+- Un registro de `TB_DATOS_USUARIO` puede tener muchas mascotas.
+- Una mascota pertenece a un registro de `TB_DATOS_USUARIO`.
+- Un tipo puede tener muchas mascotas.
+- Una raza puede tener muchas mascotas.
+- Una mascota pertenece a un tipo y a una raza.
+
+Nota de modelado:
+El diagrama usa `TB_TIPO_MASCOTA` y `TB_RAZA_MASCOTA`, pero el proyecto ya tenia `TB_TIPO` y `TB_RAZA` con semillas y endpoints. Para no duplicar entidades equivalentes, `TB_MASCOTAS` se relaciona con esos catalogos existentes.
+
+Endpoints:
+
+```http
+POST   /api/mascotas
+GET    /api/mascotas
+GET    /api/mascotas/:id
+GET    /api/mascotas/user-data/:userDataId
+PUT    /api/mascotas/:id
+DELETE /api/mascotas/:id
+```
+
+## Modulo `clinical-records`
+
+El modulo `clinical-records` agrega la parte relacional del historial clinico que aparece en el diagrama.
+
+Tablas:
+- `TB_VACUNAS`: vacunas aplicadas o registradas.
+- `TB_DESPARASITACIONES`: desparasitaciones.
+- `TB_CIRUGIAS`: cirugias.
+- `TB_ENFERMEDADES`: enfermedades.
+- `TB_DETALLE_CLINICO`: detalle clinico asociado a una mascota.
+- `TB_DETALLE_CLINICO_HAS_TB_VACUNAS`: tabla puente entre detalle clinico y vacunas.
+
+Relaciones:
+- Una mascota tiene muchos detalles clinicos.
+- Un detalle clinico pertenece a una mascota.
+- Un detalle clinico puede referenciar una desparasitacion, una cirugia y una enfermedad.
+- Un detalle clinico puede tener muchas vacunas.
+- Una vacuna puede aparecer en muchos detalles clinicos.
+
+Nota de modelado:
+La relacion con vacunas se implementa como muchos-a-muchos mediante tabla puente, porque el diagrama muestra `TB_DETALLE_CLINICO_HAS_TB_VACUNAS`. Las relaciones hacia cirugias, enfermedades y desparasitaciones se mantienen opcionales para permitir crear detalles clinicos incompletos.
+
+Endpoints:
+
+```http
+POST   /api/vacunas
+GET    /api/vacunas
+GET    /api/vacunas/:id
+PUT    /api/vacunas/:id
+DELETE /api/vacunas/:id
+
+POST   /api/desparasitaciones
+GET    /api/desparasitaciones
+GET    /api/desparasitaciones/:id
+PUT    /api/desparasitaciones/:id
+DELETE /api/desparasitaciones/:id
+
+POST   /api/cirugias
+GET    /api/cirugias
+GET    /api/cirugias/:id
+PUT    /api/cirugias/:id
+DELETE /api/cirugias/:id
+
+POST   /api/enfermedades
+GET    /api/enfermedades
+GET    /api/enfermedades/:id
+PUT    /api/enfermedades/:id
+DELETE /api/enfermedades/:id
+
+POST   /api/detalle-clinico
+GET    /api/detalle-clinico
+GET    /api/detalle-clinico/:id
+GET    /api/detalle-clinico/pet/:petId
+PUT    /api/detalle-clinico/:id
+DELETE /api/detalle-clinico/:id
+```
 
 ### `infrastructure/persistence/mongoose`
 

@@ -44,7 +44,22 @@ function validateUpdateUser(req, res, next) {
   return next();
 }
 
+function validateLoginUser(req, res, next) {
+  const { email, password } = req.body;
+
+  if (!email || !validator.isEmail(String(email))) {
+    return res.status(400).json({ message: "email es obligatorio y debe ser valido" });
+  }
+
+  if (!password) {
+    return res.status(400).json({ message: "password es obligatorio" });
+  }
+
+  return next();
+}
+
 module.exports = {
   validateCreateUser,
-  validateUpdateUser
+  validateUpdateUser,
+  validateLoginUser
 };

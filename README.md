@@ -72,6 +72,7 @@ GET /api/health
 ### Usuarios
 
 ```http
+POST   /api/users/login
 POST   /api/users
 GET    /api/users
 GET    /api/users/:id
@@ -80,6 +81,8 @@ DELETE /api/users/:id
 ```
 
 Al crear un usuario se debe enviar `userDataId`, porque `TB_USUARIO` mantiene una relacion 1 a 1 con `TB_DATOS_USUARIO`.
+
+El login recibe `email` y `password` en texto plano y responde solo `roleId`, `userId` y `userDataId` cuando las credenciales son validas.
 
 ### Datos de usuario
 
@@ -111,6 +114,56 @@ GET    /api/clinical-history/pet/:petId
 PUT    /api/clinical-history/:id
 DELETE /api/clinical-history/:id
 ```
+
+### Mascotas
+
+```http
+POST   /api/mascotas
+GET    /api/mascotas
+GET    /api/mascotas/:id
+GET    /api/mascotas/user-data/:userDataId
+PUT    /api/mascotas/:id
+DELETE /api/mascotas/:id
+```
+
+Las mascotas usan los catalogos existentes `TB_TIPO` y `TB_RAZA`, y se relacionan con `TB_DATOS_USUARIO` mediante `userDataId`.
+
+### Detalle clinico relacional
+
+```http
+POST   /api/vacunas
+GET    /api/vacunas
+GET    /api/vacunas/:id
+PUT    /api/vacunas/:id
+DELETE /api/vacunas/:id
+
+POST   /api/desparasitaciones
+GET    /api/desparasitaciones
+GET    /api/desparasitaciones/:id
+PUT    /api/desparasitaciones/:id
+DELETE /api/desparasitaciones/:id
+
+POST   /api/cirugias
+GET    /api/cirugias
+GET    /api/cirugias/:id
+PUT    /api/cirugias/:id
+DELETE /api/cirugias/:id
+
+POST   /api/enfermedades
+GET    /api/enfermedades
+GET    /api/enfermedades/:id
+PUT    /api/enfermedades/:id
+DELETE /api/enfermedades/:id
+
+POST   /api/detalle-clinico
+GET    /api/detalle-clinico
+GET    /api/detalle-clinico/:id
+GET    /api/detalle-clinico/pet/:petId
+PUT    /api/detalle-clinico/:id
+DELETE /api/detalle-clinico/:id
+```
+
+`TB_DETALLE_CLINICO` pertenece a una mascota y puede relacionarse con cirugia, enfermedad y desparasitacion. Las vacunas se relacionan mediante la tabla puente `TB_DETALLE_CLINICO_HAS_TB_VACUNAS`.
 
 ### Tipos de mascota
 
@@ -146,6 +199,8 @@ pawlytics_backend/
       user-data/
       roles/
       clinical-history/
+      clinical-records/
+      pets/
   documents/
   postman/
 ```
@@ -165,6 +220,8 @@ Los modulos actuales son:
 - `roles`: gestion de roles con PostgreSQL.
 - `clinical-history`: gestion de historias clinicas con MongoDB.
 - `catalogs`: consulta de tipos de mascota y razas con PostgreSQL.
+- `pets`: gestion de mascotas con PostgreSQL.
+- `clinical-records`: detalle clinico relacional y sus tablas asociadas con PostgreSQL.
 
 Los catalogos de `TB_TIPO` y `TB_RAZA` se cargan desde el codigo al iniciar el servidor. Los ids de tipo usan prefijos como `DOG001`; los ids de raza combinan el prefijo del tipo, una abreviatura del nombre y el consecutivo, por ejemplo `DOGMEZ001`.
 

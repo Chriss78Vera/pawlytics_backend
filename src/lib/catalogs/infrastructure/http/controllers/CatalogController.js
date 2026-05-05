@@ -20,11 +20,9 @@ class CatalogController {
   static async findTypeById(req, res) {
     try {
       const type = await new GetTypeByIdUseCase(catalogRepository).execute(req.params.id);
-
       if (!type) {
         return res.status(404).json({ message: "Tipo no encontrado" });
       }
-
       return res.json(type);
     } catch (error) {
       return res.status(500).json({ message: error.message });

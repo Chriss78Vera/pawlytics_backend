@@ -72,3 +72,31 @@ Se agrego la carpeta `postman` con una coleccion que contiene las rutas principa
 
 Motivo:
 Facilitar las pruebas manuales de los endpoints desde Postman.
+
+## Login de usuarios
+
+Se agrego el endpoint `POST /api/users/login`.
+
+Funcionalidad:
+- Recibir `email` y `password`.
+- Comparar la password en texto plano contra la contrasena hasheada almacenada.
+- Responder `200` solo con `roleId`, `userId` y `userDataId`.
+- Responder `401` cuando las credenciales no son validas.
+
+Motivo:
+Permitir el inicio de sesion basico sin incorporar tokens ni datos adicionales en la respuesta.
+
+## Mascotas y detalle clinico relacional
+
+Se agregaron los modulos `pets` y `clinical-records` usando PostgreSQL.
+
+Funcionalidad:
+- CRUD de mascotas en `TB_MASCOTAS`.
+- Relacion de mascotas con `TB_DATOS_USUARIO`.
+- Relacion de mascotas con los catalogos existentes `TB_TIPO` y `TB_RAZA`.
+- CRUD de vacunas, desparasitaciones, cirugias y enfermedades.
+- CRUD de detalle clinico en `TB_DETALLE_CLINICO`.
+- Relacion muchos-a-muchos entre detalle clinico y vacunas mediante `TB_DETALLE_CLINICO_HAS_TB_VACUNAS`.
+
+Motivo:
+Completar las entidades faltantes del diagrama sin duplicar las entidades que ya existian en el proyecto. Se conservaron `TB_TIPO` y `TB_RAZA` como catalogos de mascotas en lugar de crear tablas equivalentes nuevas.

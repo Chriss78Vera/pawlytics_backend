@@ -39,6 +39,14 @@ class UserPostgresRepository extends UserRepository {
     return user ? this.toDomain(user) : null;
   }
 
+  async findByEmail(email) {
+    const user = await UserPostgresModel.findOne({
+      where: { US_EMAIL: email }
+    });
+
+    return user ? this.toAuthDomain(user) : null;
+  }
+
   async update(id, data) {
     const user = await UserPostgresModel.findByPk(id);
 
@@ -101,6 +109,18 @@ class UserPostgresRepository extends UserRepository {
             birthDate: rawUserData.DUS_F_NACIMIENTO
           }
         : undefined
+    };
+  }
+
+  toAuthDomain(user) {
+    const rawUser = user.toJSON();
+
+    return {
+      id: rawUser.US_ID,
+      email: rawUser.US_EMAIL,
+      password: rawUser.US_CONTRASENA,
+      roleId: rawUser.ROL_ID,
+      userDataId: rawUser.ID_DATOS
     };
   }
 }

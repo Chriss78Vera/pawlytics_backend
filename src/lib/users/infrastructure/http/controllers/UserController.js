@@ -4,11 +4,26 @@ const GetUsersUseCase = require("../../../application/use-cases/GetUsersUseCase"
 const GetUserByIdUseCase = require("../../../application/use-cases/GetUserByIdUseCase");
 const UpdateUserUseCase = require("../../../application/use-cases/UpdateUserUseCase");
 const DeleteUserUseCase = require("../../../application/use-cases/DeleteUserUseCase");
+const LoginUserUseCase = require("../../../application/use-cases/LoginUserUseCase");
 const UserPostgresRepository = require("../../persistence/postgres/UserPostgresRepository");
 
 const userRepository = new UserPostgresRepository();
 
 class UserController {
+  static async login(req, res) {
+    try {
+      const session = await new LoginUserUseCase(userRepository).execute(req.body);
+
+      if (!session) {
+        return res.status(401).json({ message: "Credenciales invalidas" });
+      }
+
+      return res.status(200).json(session);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   static async create(req, res) {
     try {
       const dto = new CreateUserDTO(req.body);

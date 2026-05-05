@@ -21,6 +21,30 @@
       "value": "1"
     },
     {
+      "key": "mascotaId",
+      "value": "1"
+    },
+    {
+      "key": "vaccineId",
+      "value": "1"
+    },
+    {
+      "key": "dewormingId",
+      "value": "1"
+    },
+    {
+      "key": "surgeryId",
+      "value": "1"
+    },
+    {
+      "key": "diseaseId",
+      "value": "1"
+    },
+    {
+      "key": "clinicalDetailId",
+      "value": "1"
+    },
+    {
       "key": "clinicalHistoryId",
       "value": "65f1a1b2c3d4e5f678901234"
     },
@@ -205,6 +229,22 @@
       "name": "Users",
       "item": [
         {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@pawlytics.com\",\n  \"password\": \"secret123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "login"]
+            }
+          }
+        },
+        {
           "name": "Create User",
           "request": {
             "method": "POST",
@@ -269,6 +309,448 @@
               "raw": "{{baseUrl}}/users/{{userId}}",
               "host": ["{{baseUrl}}"],
               "path": ["users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pets",
+      "item": [
+        {
+          "name": "Create Pet",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"typeId\": \"DOG001\",\n  \"breedId\": \"DOGMEZ001\",\n  \"name\": \"Firulais\",\n  \"birthDate\": \"2021-06-10\",\n  \"color\": \"Cafe\",\n  \"sex\": \"Macho\",\n  \"weight\": 12.5,\n  \"particularSigns\": \"Mancha blanca en el pecho\",\n  \"userDataId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mascotas",
+              "host": ["{{baseUrl}}"],
+              "path": ["mascotas"]
+            }
+          }
+        },
+        {
+          "name": "Get Pets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mascotas",
+              "host": ["{{baseUrl}}"],
+              "path": ["mascotas"]
+            }
+          }
+        },
+        {
+          "name": "Get Pet By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mascotas/{{mascotaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mascotas", "{{mascotaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Pets By User Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mascotas/user-data/{{userDataId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mascotas", "user-data", "{{userDataId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Pet",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"weight\": 13.2,\n  \"color\": \"Cafe claro\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/mascotas/{{mascotaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mascotas", "{{mascotaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Pet",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/mascotas/{{mascotaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["mascotas", "{{mascotaId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clinical Records SQL",
+      "item": [
+        {
+          "name": "Create Vaccine",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Rabia\",\n  \"date\": \"2026-05-01\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vacunas",
+              "host": ["{{baseUrl}}"],
+              "path": ["vacunas"]
+            }
+          }
+        },
+        {
+          "name": "Get Vaccines",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vacunas",
+              "host": ["{{baseUrl}}"],
+              "path": ["vacunas"]
+            }
+          }
+        },
+        {
+          "name": "Get Vaccine By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vacunas/{{vaccineId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["vacunas", "{{vaccineId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Vaccine",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Rabia anual\",\n  \"date\": \"2026-05-01\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/vacunas/{{vaccineId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["vacunas", "{{vaccineId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Vaccine",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/vacunas/{{vaccineId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["vacunas", "{{vaccineId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Deworming",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Interna\",\n  \"date\": \"2026-04-20\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/desparasitaciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["desparasitaciones"]
+            }
+          }
+        },
+        {
+          "name": "Get Dewormings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/desparasitaciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["desparasitaciones"]
+            }
+          }
+        },
+        {
+          "name": "Get Deworming By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/desparasitaciones/{{dewormingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["desparasitaciones", "{{dewormingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Deworming",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Interna y externa\",\n  \"date\": \"2026-04-20\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/desparasitaciones/{{dewormingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["desparasitaciones", "{{dewormingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Deworming",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/desparasitaciones/{{dewormingId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["desparasitaciones", "{{dewormingId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Surgery",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Esterilizacion\",\n  \"description\": \"Procedimiento sin complicaciones\",\n  \"date\": \"2025-08-12\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cirugias",
+              "host": ["{{baseUrl}}"],
+              "path": ["cirugias"]
+            }
+          }
+        },
+        {
+          "name": "Get Surgeries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cirugias",
+              "host": ["{{baseUrl}}"],
+              "path": ["cirugias"]
+            }
+          }
+        },
+        {
+          "name": "Get Surgery By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cirugias/{{surgeryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cirugias", "{{surgeryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Surgery",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Esterilizacion\",\n  \"description\": \"Control posterior sin complicaciones\",\n  \"date\": \"2025-08-12\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cirugias/{{surgeryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cirugias", "{{surgeryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Surgery",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cirugias/{{surgeryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cirugias", "{{surgeryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Disease",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dermatitis\",\n  \"treatment\": \"Shampoo medicado\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enfermedades",
+              "host": ["{{baseUrl}}"],
+              "path": ["enfermedades"]
+            }
+          }
+        },
+        {
+          "name": "Get Diseases",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enfermedades",
+              "host": ["{{baseUrl}}"],
+              "path": ["enfermedades"]
+            }
+          }
+        },
+        {
+          "name": "Get Disease By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enfermedades/{{diseaseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enfermedades", "{{diseaseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Disease",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dermatitis\",\n  \"treatment\": \"Shampoo medicado y control\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enfermedades/{{diseaseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enfermedades", "{{diseaseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Disease",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enfermedades/{{diseaseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enfermedades", "{{diseaseId}}"]
+            }
+          }
+        },
+        {
+          "name": "Create Clinical Detail",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"petId\": 1,\n  \"diet\": \"Balanceado\",\n  \"sterilization\": true,\n  \"births\": 0,\n  \"surgeryId\": 1,\n  \"diseaseId\": 1,\n  \"dewormingId\": 1,\n  \"animals\": \"Convive con otro perro\",\n  \"vaccineIds\": [1]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/detalle-clinico",
+              "host": ["{{baseUrl}}"],
+              "path": ["detalle-clinico"]
+            }
+          }
+        },
+        {
+          "name": "Get Clinical Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/detalle-clinico",
+              "host": ["{{baseUrl}}"],
+              "path": ["detalle-clinico"]
+            }
+          }
+        },
+        {
+          "name": "Get Clinical Detail By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/detalle-clinico/{{clinicalDetailId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["detalle-clinico", "{{clinicalDetailId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get Clinical Details By Pet",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/detalle-clinico/pet/{{mascotaId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["detalle-clinico", "pet", "{{mascotaId}}"]
+            }
+          }
+        },
+        {
+          "name": "Update Clinical Detail",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"diet\": \"Balanceado senior\",\n  \"vaccineIds\": [1]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/detalle-clinico/{{clinicalDetailId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["detalle-clinico", "{{clinicalDetailId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Clinical Detail",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/detalle-clinico/{{clinicalDetailId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["detalle-clinico", "{{clinicalDetailId}}"]
             }
           }
         }
